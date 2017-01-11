@@ -77,6 +77,7 @@ void Contention::startContention(int cw, simtime_t ifs, simtime_t eifs, simtime_
 {
     ASSERT(ifs >= 0 && eifs >= 0 && slotTime >= 0 && cw >= 0);
     Enter_Method("startContention()");
+    cancelEvent(channelGrantedEvent);
     ASSERT(fsm.getState() == IDLE);
     this->ifs = ifs;
     this->eifs = eifs;
