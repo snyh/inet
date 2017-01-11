@@ -125,6 +125,9 @@ class INET_API Hcf : public ICoordinationFunction, public IFrameSequenceHandler:
         SingleProtectionMechanism *singleProtectionMechanism = nullptr;
         DummyProtectionMechanism *dummyProtectionMechanism = nullptr;
 
+        // XXX: only for validation
+        std::map<int,int> retryCount;
+
     protected:
         virtual int numInitStages() const override { return NUM_INIT_STAGES; }
         virtual void initialize(int stage) override;

@@ -204,7 +204,16 @@ void Hcf::handleInternalCollision(std::vector<Edcaf*> internallyCollidedEdcafs)
         }
         else {
             EV_DETAIL << "The frame has not reached its retry limit." << std::endl;
-            edcaf->requestChannel(this);
+            // edcaf->requestChannel(this); XXX: only for validation
+            int cwMax = edcaf->getCwMax();
+            int cwMin = edcaf->getCwMin();
+            retryCount[internallyCollidedFrame->getTreeId()]++;
+            int rc = retryCount[internallyCollidedFrame->getTreeId()];
+            int cw = ((cwMin + 1) << rc) - 1;
+            if (cw > cwMax)
+                cw = cwMax;
+            edcaf->requestChannel(this, cw);
+            // XXX: validation
         }
     }
 }
