@@ -42,7 +42,6 @@ class INET_API Edcaf : public IChannelAccess, public IContention::ICallback, pub
         IEdcaCollisionController *collisionController = nullptr;
 
         bool owning = false;
-        bool contentionInProgress = false;
 
         simtime_t slotTime = -1;
         simtime_t sifs = -1;

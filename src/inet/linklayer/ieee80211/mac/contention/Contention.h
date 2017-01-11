@@ -83,6 +83,7 @@ class INET_API Contention : public cSimpleModule, public IContention
 
         virtual void mediumStateChanged(bool mediumFree) override;
         virtual void corruptedFrameReceived() override;
+        virtual bool isContentionInProgress() override { fsm.getState() != IDLE; }
 };
 
 } // namespace ieee80211

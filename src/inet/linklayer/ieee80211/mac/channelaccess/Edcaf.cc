@@ -106,7 +106,6 @@ AccessCategory Edcaf::getAccessCategory(const char *ac)
 void Edcaf::channelAccessGranted()
 {
     ASSERT(callback != nullptr);
-    contentionInProgress = false;
     if (!collisionController->isInternalCollision(this)) {
         owning = true;
         callback->channelGranted(this);
@@ -119,7 +118,6 @@ void Edcaf::releaseChannel(IChannelAccess::ICallback* callback)
 {
     ASSERT(owning);
     owning = false;
-    contentionInProgress = false;
     this->callback = nullptr;
     if (hasGUI())
         updateDisplayString();
@@ -129,12 +127,17 @@ void Edcaf::requestChannel(IChannelAccess::ICallback* callback)
 {
     this->callback = callback;
     ASSERT(!owning);
-    if (contentionInProgress)
+    if (contention->isContentionInProgress())
         EV_DETAIL << "Contention has already been started" << std::endl;
     else {
-        EV_DETAIL << "Starting contention with cw = " << cw << ", ifs = " << ifs << ", eifs = "
-                  << eifs << ", slotTime = " << slotTime << std::endl;
-        contentionInProgress = true;
+//        EV_DETAIL << "Starting contention with cw = " << cw << ", ifs = " << ifs << ", eifs = "
+//                  << eifs << ", slotTime = " << slotTime << std::endl;
+        contention->startContention(cw, ifs, eifs, slotTime, this);
+    }
+    if (hasGUI())
+        updateDisplayString();
+}
+
         contention->startContention(cw, ifs, eifs, slotTime, this);
     }
     if (hasGUI())
@@ -189,11 +192,10 @@ void Edcaf::updateDisplayString()
     std::string displayString(printAccessCategory(ac));
     if (owning)
         displayString += "\n(Channel owner)";
-    else if (contentionInProgress)
+    else if (contention->isContentionInProgress())
         displayString += "\n(Contention in progress)";
     getDisplayString().setTagArg("t", 0, displayString.c_str());
 }
 
 } // namespace ieee80211
-}// namespace inet
-
+} // namespace inet
