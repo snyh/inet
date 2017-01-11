@@ -106,11 +106,11 @@ AccessCategory Edcaf::getAccessCategory(const char *ac)
 void Edcaf::channelAccessGranted()
 {
     ASSERT(callback != nullptr);
+    contentionInProgress = false;
     if (!collisionController->isInternalCollision(this)) {
         owning = true;
         callback->channelGranted(this);
     }
-    contentionInProgress = false;
     if (hasGUI())
         updateDisplayString();
 }
