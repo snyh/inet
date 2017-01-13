@@ -17,10 +17,6 @@
 
 #include "inet/common/geometry/common/CoordinateSystem.h"
 
-#ifdef WITH_OSG
-#include <osgEarthUtil/ObjectLocator>
-#endif
-
 namespace inet {
 
 const GeoCoord GeoCoord::NIL = GeoCoord(NaN, NaN, NaN);
@@ -50,53 +46,6 @@ GeoCoord SimpleGeographicCoordinateSystem::computeGeographicCoordinate(const Coo
     return GeoCoord(geograpicLatitude, geograpicLongitude, playgroundCoordinate.z - playgroundAltitude);
 }
 
-#ifdef WITH_OSG
-
-Define_Module(OsgGeographicCoordinateSystem);
-
-void OsgGeographicCoordinateSystem::initialize(int stage)
-{
-    if (stage == INITSTAGE_LOCAL) {
-        auto mapScene = getParentModule()->getOsgCanvas()->getScene();
-        mapNode = osgEarth::MapNode::findMapNode(mapScene);
-        if (mapNode == nullptr)
-            throw cRuntimeError("Count not find map node in the scene");
-        double playgroundLatitude = par("playgroundLatitude");
-        double playgroundLongitude = par("playgroundLongitude");
-        double playgroundAltitude = par("playgroundAltitude");
-        double playgroundHeading = par("playgroundHeading");
-        double playgroundElevation = par("playgroundElevation");
-        double playgroundBank = par("playgroundBank");
-        playgroundPosition = GeoCoord(playgroundLatitude, playgroundLongitude, playgroundAltitude);
-        playgroundOrientation = EulerAngles(playgroundHeading, playgroundElevation, playgroundBank);
-        auto locatorNode = new osgEarth::Util::ObjectLocatorNode(mapNode->getMap());
-        locatorNode->getLocator()->setPosition(osg::Vec3d(playgroundLongitude, playgroundLatitude, playgroundAltitude));
-        locatorNode->getLocator()->setOrientation(osg::Vec3d(playgroundHeading, playgroundElevation, playgroundBank));
-        locatorNode->getLocator()->getLocatorMatrix(locatorMatrix);
-        inverseLocatorMatrix.invert(locatorMatrix);
-        delete locatorNode;
-    }
-}
-
-Coord OsgGeographicCoordinateSystem::computePlaygroundCoordinate(const GeoCoord& geographicCoordinate) const
-{
-    auto mapSrs = mapNode->getMapSRS();
-    osg::Vec3d ecefCoordinate;
-    mapSrs->getGeographicSRS()->transform(osg::Vec3d(geographicCoordinate.longitude, geographicCoordinate.latitude, geographicCoordinate.altitude), mapSrs->getECEF(), ecefCoordinate);
-    auto playgroundCoordinate = osg::Vec4d(ecefCoordinate.x(), ecefCoordinate.y(), ecefCoordinate.z(), 1.0) * inverseLocatorMatrix;
-    return Coord(playgroundCoordinate.x(), playgroundCoordinate.y(), playgroundCoordinate.z());
-}
-
-GeoCoord OsgGeographicCoordinateSystem::computeGeographicCoordinate(const Coord& playgroundCoordinate) const
-{
-    auto ecefCoordinate = osg::Vec4d(playgroundCoordinate.x, playgroundCoordinate.y, playgroundCoordinate.z, 1.0) * locatorMatrix;
-    auto mapSrs = mapNode->getMapSRS();
-    osg::Vec3d geographicCoordinate;
-    mapSrs->getECEF()->transform(osg::Vec3d(ecefCoordinate.x(), ecefCoordinate.y(), ecefCoordinate.z()), mapSrs->getGeographicSRS(), geographicCoordinate);
-    return GeoCoord(geographicCoordinate.y(), geographicCoordinate.x(), geographicCoordinate.z());
-}
-
-#endif // WITH_OSG
 
 } // namespace inet
 

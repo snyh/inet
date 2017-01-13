@@ -15,21 +15,17 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "inet/common/OSGUtils.h"
+#include "inet/visualizer/base/OSGUtils.h"
 
-#ifdef WITH_OSG
+#if defined(WITH_OSG)
 #include <osg/CullFace>
 #include <osg/Depth>
 #include <osg/Light>
 #include <osg/LightSource>
 #include <osgDB/ReadFile>
-#endif // ifdef WITH_OSG
 
 namespace inet {
-
 namespace osg {
-
-#ifdef WITH_OSG
 
 Vec3Array *createCircleVertices(const Coord& center, double radius, int polygonSize)
 {
@@ -280,9 +276,10 @@ StateSet *createStateSet(const cFigure::Color& color, double opacity, bool cullB
     return stateSet;
 }
 
-#endif // ifdef WITH_OSG
-
 } // namespace osg
 
 } // namespace inet
+
+#endif // ifdef WITH_OSG
+
 

@@ -20,8 +20,8 @@
 #include "inet/common/geometry/shape/Prism.h"
 #include "inet/common/geometry/shape/Sphere.h"
 #include "inet/common/ModuleAccess.h"
-#include "inet/common/OSGScene.h"
-#include "inet/common/OSGUtils.h"
+#include "inet/visualizer/base/OSGScene.h"
+#include "inet/visualizer/base/OSGUtils.h"
 #include "inet/visualizer/environment/PhysicalEnvironmentOsgVisualizer.h"
 
 #ifdef WITH_OSG

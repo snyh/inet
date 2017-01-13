@@ -16,7 +16,7 @@
 //
 
 #include <algorithm>
-#include "inet/common/OSGUtils.h"
+#include "inet/visualizer/base/OSGUtils.h"
 #include "inet/visualizer/networknode/NetworkNodeOsgVisualization.h"
 
 #ifdef WITH_OSG

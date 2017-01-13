@@ -822,6 +822,7 @@
         labels = ""
         nedPackages = "
                        inet.examples.visualization
+                       inet.tutorials.visualization
                       "
         extraSourceFolders = ""
         compileFlags = ""

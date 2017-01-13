@@ -16,8 +16,8 @@
 //
 
 #include "inet/common/ModuleAccess.h"
-#include "inet/common/OSGScene.h"
-#include "inet/common/OSGUtils.h"
+#include "inet/visualizer/base/OSGScene.h"
+#include "inet/visualizer/base/OSGUtils.h"
 #include "inet/environment/contract/IPhysicalEnvironment.h"
 #include "inet/mobility/contract/IMobility.h"
 #include "inet/visualizer/networknode/NetworkNodeOsgVisualizer.h"

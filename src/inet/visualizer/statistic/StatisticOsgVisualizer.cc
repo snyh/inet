@@ -16,7 +16,7 @@
 //
 
 #include "inet/common/ModuleAccess.h"
-#include "inet/common/OSGUtils.h"
+#include "inet/visualizer/base/OSGUtils.h"
 #include "inet/visualizer/networknode/NetworkNodeOsgVisualizer.h"
 #include "inet/visualizer/statistic/StatisticOsgVisualizer.h"
 

@@ -20,16 +20,12 @@
 
 #include "inet/common/INETDefs.h"
 
-#ifdef WITH_OSG
+#if defined(WITH_OSG)
 #include <osg/Group>
 #include <osg/NodeVisitor>
-#endif // ifdef WITH_OSG
 
 namespace inet {
-
 namespace osg {
-
-#ifdef WITH_OSG
 
 using namespace ::osg;
 
@@ -71,11 +67,10 @@ class INET_API TopLevelScene : public Group
     static SimulationScene *getSimulationScene(cModule *module);
 };
 
-#endif // ifdef WITH_OSG
-
 } // namespace osg
-
 } // namespace inet
+
+#endif // ifdef WITH_OSG
 
 #endif // ifndef __INET_OSGSCENE_H
 

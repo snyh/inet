@@ -18,12 +18,9 @@
 #ifndef __INET_COORDINATESYSTEM_H
 #define __INET_COORDINATESYSTEM_H
 
+#include "inet/common/INETDefs.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/common/geometry/common/EulerAngles.h"
-
-#ifdef WITH_OSG
-#include <osgEarth/MapNode>
-#endif
 
 namespace inet {
 
@@ -73,29 +70,6 @@ class INET_API SimpleGeographicCoordinateSystem : public cSimpleModule, public I
     virtual GeoCoord computeGeographicCoordinate(const Coord& playgroundCoordinate) const override;
 };
 
-#ifdef WITH_OSG
-
-class INET_API OsgGeographicCoordinateSystem : public cSimpleModule, public IGeographicCoordinateSystem
-{
-  protected:
-    GeoCoord playgroundPosition = GeoCoord::NIL;
-    EulerAngles playgroundOrientation = EulerAngles::NIL;
-    osgEarth::MapNode *mapNode = nullptr;
-    osg::Matrixd locatorMatrix;
-    osg::Matrixd inverseLocatorMatrix;
-
-  protected:
-    virtual void initialize(int stage) override;
-
-  public:
-    virtual GeoCoord getPlaygroundPosition() const override { return playgroundPosition; }
-    virtual EulerAngles getPlaygroundOrientation() const override { return playgroundOrientation; }
-
-    virtual Coord computePlaygroundCoordinate(const GeoCoord& geographicCoordinate) const override;
-    virtual GeoCoord computeGeographicCoordinate(const Coord& playgroundCoordinate) const override;
-};
-
-#endif // WITH_OSG
 
 } // namespace inet
 

@@ -21,7 +21,7 @@
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/common/geometry/common/EulerAngles.h"
 
-#ifdef WITH_OSG
+#if defined(WITH_OSG) && defined(WITH_VISUALIZERS)
 #include <osg/AutoTransform>
 #include <osg/Geode>
 #include <osg/Geometry>
@@ -31,13 +31,10 @@
 #include <osg/ShapeDrawable>
 #include <osg/Texture2D>
 #include <osgText/Text>
-#endif // ifdef WITH_OSG
 
 namespace inet {
 
 namespace osg {
-
-#ifdef WITH_OSG
 
 using namespace ::osg;
 
@@ -68,11 +65,11 @@ Texture2D *createTexture(const char *name, bool repeat);
 
 StateSet *createStateSet(const cFigure::Color& color, double opacity, bool cullBackFace = true);
 
-#endif // ifdef WITH_OSG
-
 } // namespace osg
 
 } // namespace inet
+
+#endif // ifdef WITH_OSG
 
 #endif // ifndef __INET_OSGUTILS_H
 
